@@ -1,0 +1,15 @@
+insert into category values (1, 'Bills and Utilities', 'EXPENSE');
+insert into category values (2, 'Food and Drinks', 'EXPENSE');
+insert into category values (3, 'Health and Fitness', 'EXPENSE');
+insert into category values (4, 'Transportation', 'EXPENSE');
+insert into category values (5, 'Shopping', 'EXPENSE');
+insert into category values (6, 'Gifts & Donations', 'EXPENSE');
+insert into category values (7, 'Entertainment', 'EXPENSE');
+insert into category values (8, 'Education', 'EXPENSE');
+insert into category values (9, 'Household', 'EXPENSE');
+insert into category values (10, 'Others', 'EXPENSE');
+insert into category values (11, 'Salary', 'INCOME');
+insert into category values (12, 'Gifts', 'INCOME');
+insert into category values (13, 'Interest Money', 'INCOME');
+insert into category values (14, 'Selling', 'INCOME');
+insert into category values (15, 'Others', 'INCOME');
