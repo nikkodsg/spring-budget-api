@@ -9,7 +9,9 @@ public class Category {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
-  private String type;
+
+  @Enumerated(value = EnumType.STRING)
+  private CategoryType type;
 
   public Long getId() {
     return id;
@@ -19,7 +21,7 @@ public class Category {
     return name;
   }
 
-  public String getType() {
+  public CategoryType getType() {
     return type;
   }
 }
