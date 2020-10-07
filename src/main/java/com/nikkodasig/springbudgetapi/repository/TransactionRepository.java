@@ -1,12 +1,23 @@
 package com.nikkodasig.springbudgetapi.repository;
 
 import com.nikkodasig.springbudgetapi.model.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+
+  Page<Transaction> findAll(Pageable pageable);
+
+  Page<Transaction> findAllByDateGreaterThanEqual(LocalDate startDate, Pageable pageable);
+
+  Page<Transaction> findAllByDateLessThanEqual(LocalDate endDate, Pageable pageable);
+
+  Page<Transaction> findAllByDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
 
   @Query(value =
           "SELECT * \n" +

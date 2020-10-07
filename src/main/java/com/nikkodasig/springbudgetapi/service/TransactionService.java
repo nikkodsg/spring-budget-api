@@ -5,9 +5,11 @@ import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.exception.NotFoundException;
 import com.nikkodasig.springbudgetapi.model.Transaction;
 import com.nikkodasig.springbudgetapi.repository.TransactionRepository;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +41,28 @@ public class TransactionService {
     return transactionMapper.toDto(updatedTransaction);
   }
 
-  public List<TransactionDto> getAllTransactions() {
+  public List<TransactionDto> getAll() {
     List<Transaction> transactionList = transactionRepository.findAll();
     return transactionList
             .stream()
             .map(transaction -> transactionMapper.toDto(transaction))
             .collect(Collectors.toList());
   }
+
+  public Page<Transaction> getAllPaginated(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+    if (startDate != null && endDate != null) {
+      return transactionRepository.findAllByDateBetween(startDate, endDate, pageable);
+    }
+    if (startDate != null) {
+      return transactionRepository.findAllByDateGreaterThanEqual(startDate, pageable);
+    }
+    if (endDate != null) {
+      return transactionRepository.findAllByDateLessThanEqual(endDate, pageable);
+    }
+
+    return transactionRepository.findAll(pageable);
+  }
+
 
   public TransactionDto getTransaction(Long id) {
     Transaction transaction = transactionRepository.findById(id)
