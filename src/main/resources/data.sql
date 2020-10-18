@@ -1,18 +1,18 @@
-INSERT INTO category VALUES (1, 'Bills and Utilities', 'EXPENSE');
-INSERT INTO category VALUES (2, 'Food and Drinks', 'EXPENSE');
-INSERT INTO category VALUES (3, 'Health and Fitness', 'EXPENSE');
-INSERT INTO category VALUES (4, 'Transportation', 'EXPENSE');
-INSERT INTO category VALUES (5, 'Shopping', 'EXPENSE');
-INSERT INTO category VALUES (6, 'Gifts & Donations', 'EXPENSE');
-INSERT INTO category VALUES (7, 'Entertainment', 'EXPENSE');
-INSERT INTO category VALUES (8, 'Education', 'EXPENSE');
-INSERT INTO category VALUES (9, 'Household', 'EXPENSE');
-INSERT INTO category VALUES (10, 'Others', 'EXPENSE');
-INSERT INTO category VALUES (11, 'Salary', 'INCOME');
-INSERT INTO category VALUES (12, 'Gifts', 'INCOME');
-INSERT INTO category VALUES (13, 'Interest Money', 'INCOME');
-INSERT INTO category VALUES (14, 'Selling', 'INCOME');
-INSERT INTO category VALUES (15, 'Others', 'INCOME');
+INSERT INTO category (name, type) VALUES ('Bills and Utilities', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Food and Drinks', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Health and Fitness', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Transportation', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Shopping', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Gifts & Donations', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Entertainment', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Education', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Household', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Others', 'EXPENSE');
+INSERT INTO category (name, type) VALUES ('Salary', 'INCOME');
+INSERT INTO category (name, type) VALUES ('Gifts', 'INCOME');
+INSERT INTO category (name, type) VALUES ('Interest Money', 'INCOME');
+INSERT INTO category (name, type) VALUES ('Selling', 'INCOME');
+INSERT INTO category (name, type) VALUES ('Others', 'INCOME');
 
 INSERT INTO transaction (amount, description, date, category_id) VALUES
     ('205.50', 'Monthly electricity bill', '2020-08-20', 1),
