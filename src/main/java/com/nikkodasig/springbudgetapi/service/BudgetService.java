@@ -9,7 +9,6 @@ import com.nikkodasig.springbudgetapi.dto.mapper.CategoryMapper;
 import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.exception.NotFoundException;
 import com.nikkodasig.springbudgetapi.model.*;
-import com.nikkodasig.springbudgetapi.repository.BudgetPeriodRepository;
 import com.nikkodasig.springbudgetapi.repository.BudgetRepository;
 import com.nikkodasig.springbudgetapi.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -27,18 +26,19 @@ public class BudgetService {
 
   private BudgetRepository budgetRepository;
   private TransactionRepository transactionRepository;
-  private BudgetPeriodRepository budgetPeriodRepository;
   private BudgetMapper budgetMapper;
   private CategoryMapper categoryMapper;
   private TransactionMapper transactionMapper;
 
-  public BudgetService(BudgetRepository budgetRepository, TransactionRepository transactionRepository,
-                       BudgetPeriodRepository budgetPeriodRepository, BudgetMapper budgetMapper,
-                       CategoryMapper categoryMapper, TransactionMapper transactionMapper) {
+  public BudgetService(
+          BudgetRepository budgetRepository,
+          TransactionRepository transactionRepository,
+          BudgetMapper budgetMapper,
+          CategoryMapper categoryMapper,
+          TransactionMapper transactionMapper) {
 
     this.budgetRepository = budgetRepository;
     this.transactionRepository = transactionRepository;
-    this.budgetPeriodRepository = budgetPeriodRepository;
     this.budgetMapper = budgetMapper;
     this.categoryMapper = categoryMapper;
     this.transactionMapper = transactionMapper;
