@@ -1,0 +1,25 @@
+version: '3'
+services:
+  db:
+    container_name: sba-db
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: budgetapp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '5451:5432'
+  web:
+    container_name: sba-web
+    image: nikkodsg/spring-budget-api
+    restart: always
+    build: .
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/budgetapp
+    ports:
+      - '8090:8080'
+    depends_on:
+      - db
