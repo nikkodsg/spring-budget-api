@@ -75,4 +75,10 @@ public class TransactionController {
     return ResponseEntity.ok().body(transactionDto);
   }
 
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteTransaction(@PathVariable Long id) {
+    transactionService.delete(id);
+    return ResponseEntity.noContent().build();
+  }
+
 }

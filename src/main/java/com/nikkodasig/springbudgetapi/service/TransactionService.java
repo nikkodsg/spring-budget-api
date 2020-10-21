@@ -5,6 +5,7 @@ import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.exception.NotFoundException;
 import com.nikkodasig.springbudgetapi.model.Transaction;
 import com.nikkodasig.springbudgetapi.repository.TransactionRepository;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,12 @@ public class TransactionService {
             .orElseThrow(() -> new NotFoundException(("Resource not found")));
 
     return transactionMapper.toDto(transaction);
+  }
+
+  public void delete(Long id) {
+    transactionRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Resource not found"));
+
+    transactionRepository.deleteById(id);
   }
 }
