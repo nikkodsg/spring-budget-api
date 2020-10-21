@@ -3,13 +3,11 @@ package com.nikkodasig.springbudgetapi.controller;
 import com.nikkodasig.springbudgetapi.dto.CategoryDto;
 import com.nikkodasig.springbudgetapi.model.Category;
 import com.nikkodasig.springbudgetapi.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
