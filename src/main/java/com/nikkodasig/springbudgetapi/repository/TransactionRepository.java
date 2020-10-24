@@ -25,6 +25,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
           "LEFT JOIN category c\n" +
           "ON t.category_id = c.id\n" +
           "WHERE c.id = ? and t.date >= ? and t.date <= ?", nativeQuery = true)
-  List<Transaction> getTransactionByCategoryAndDateBetween(Long categoryId, String startDate, String endDate);
+  List<Transaction> getTransactionByCategoryAndDateBetween(Long categoryId, LocalDate startDate, LocalDate endDate);
 
 }

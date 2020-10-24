@@ -127,7 +127,7 @@ public class BudgetService {
     PeriodRange periodRange = getPeriodRange(budget.getPeriodType(), startDate);
 
     return transactionRepository.getTransactionByCategoryAndDateBetween(
-            budget.getCategory().getId(), periodRange.getStartDate().toString(), periodRange.getEndDate().toString());
+            budget.getCategory().getId(), periodRange.getStartDate(), periodRange.getEndDate());
   }
 
   private PeriodRange getPeriodRange(BudgetPeriodType periodType, LocalDate date) {
