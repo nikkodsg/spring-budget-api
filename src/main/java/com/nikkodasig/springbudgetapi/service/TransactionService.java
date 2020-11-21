@@ -80,10 +80,7 @@ public class TransactionService {
     transactionRepository.deleteById(id);
   }
 
-  public double calculateTotalAmount(List<Transaction> transactions, CategoryType categoryType) {
-    return transactions.stream()
-            .filter(item -> item.getCategory().getType() == categoryType)
-            .mapToDouble(item -> item.getAmount())
-            .sum();
+  public double getTotalAmount(LocalDate startDate, LocalDate endDate, String categoryType) {
+    return transactionRepository.getSumOfAmountByCategoryType(startDate, endDate, categoryType).orElse(0.0d);
   }
 }

@@ -59,8 +59,8 @@ public class TransactionController {
     Pageable pageable = PageRequest.of(page, pageSize, Sort.by("date").descending().and(Sort.by("id").descending()));
     Page<Transaction> transactionPage = transactionService.getAllPaginated(startDate, endDate, pageable);
     List<Transaction> transactionList = transactionPage.getContent();
-    double totalExpense = transactionService.calculateTotalAmount(transactionList, CategoryType.EXPENSE);
-    double totalIncome = transactionService.calculateTotalAmount(transactionList, CategoryType.INCOME);
+    double totalExpense = transactionService.getTotalAmount(startDate, endDate, CategoryType.EXPENSE.toString());
+    double totalIncome = transactionService.getTotalAmount(startDate, endDate, CategoryType.INCOME.toString());
 
     Map<String, Object> response = new LinkedHashMap<>();
     response.put("transactions", transactionList);
