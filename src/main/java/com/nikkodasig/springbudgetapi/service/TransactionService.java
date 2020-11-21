@@ -3,6 +3,7 @@ package com.nikkodasig.springbudgetapi.service;
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
 import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.exception.NotFoundException;
+import com.nikkodasig.springbudgetapi.model.CategoryType;
 import com.nikkodasig.springbudgetapi.model.Transaction;
 import com.nikkodasig.springbudgetapi.repository.TransactionRepository;
 import org.aspectj.weaver.ast.Not;
@@ -77,5 +78,12 @@ public class TransactionService {
             .orElseThrow(() -> new NotFoundException("Resource not found"));
 
     transactionRepository.deleteById(id);
+  }
+
+  public double calculateTotalAmount(List<Transaction> transactions, CategoryType categoryType) {
+    return transactions.stream()
+            .filter(item -> item.getCategory().getType() == categoryType)
+            .mapToDouble(item -> item.getAmount())
+            .sum();
   }
 }

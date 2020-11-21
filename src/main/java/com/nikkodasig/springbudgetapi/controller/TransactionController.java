@@ -1,6 +1,7 @@
 package com.nikkodasig.springbudgetapi.controller;
 
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
+import com.nikkodasig.springbudgetapi.model.CategoryType;
 import com.nikkodasig.springbudgetapi.model.Transaction;
 import com.nikkodasig.springbudgetapi.service.TransactionService;
 import org.springframework.data.domain.Page;
@@ -58,9 +59,13 @@ public class TransactionController {
     Pageable pageable = PageRequest.of(page, pageSize, Sort.by("date").descending().and(Sort.by("id").descending()));
     Page<Transaction> transactionPage = transactionService.getAllPaginated(startDate, endDate, pageable);
     List<Transaction> transactionList = transactionPage.getContent();
+    double totalExpense = transactionService.calculateTotalAmount(transactionList, CategoryType.EXPENSE);
+    double totalIncome = transactionService.calculateTotalAmount(transactionList, CategoryType.INCOME);
 
     Map<String, Object> response = new LinkedHashMap<>();
     response.put("transactions", transactionList);
+    response.put("totalExpense", totalExpense);
+    response.put("totalIncome", totalIncome);
     response.put("pageNumber", transactionPage.getNumber());
     response.put("pageSize", transactionPage.getSize());
     response.put("totalItems", transactionPage.getTotalElements());
