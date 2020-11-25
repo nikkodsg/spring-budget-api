@@ -25,6 +25,21 @@ spring:
 spring:
   profiles: local
   datasource:
+    url: jdbc:postgresql://localhost:5432/budgetapp
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+
+---
+
+spring:
+  profiles: dev
+  datasource:
     url: jdbc:postgresql://localhost:5460/budgetapp
     username: postgres
     password: password
