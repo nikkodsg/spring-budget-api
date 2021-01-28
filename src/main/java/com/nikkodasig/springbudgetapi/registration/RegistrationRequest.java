@@ -1,6 +1,6 @@
-package com.nikkodasig.springbudgetapi.dto;
+package com.nikkodasig.springbudgetapi.registration;
 
-public class RegisterRequest {
+public class RegistrationRequest {
     private String email;
     private String password;
     private String firstName;

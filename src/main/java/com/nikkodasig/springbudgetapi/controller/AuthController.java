@@ -3,6 +3,8 @@ package com.nikkodasig.springbudgetapi.controller;
 import com.nikkodasig.springbudgetapi.dto.*;
 import com.nikkodasig.springbudgetapi.model.CustomUserDetails;
 import com.nikkodasig.springbudgetapi.model.User;
+import com.nikkodasig.springbudgetapi.registration.RegistrationRequest;
+import com.nikkodasig.springbudgetapi.registration.RegistrationResponse;
 import com.nikkodasig.springbudgetapi.repository.UserRepository;
 import com.nikkodasig.springbudgetapi.security.JwtTokenProvider;
 import org.springframework.http.ResponseEntity;
@@ -25,36 +27,15 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
     private PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepository, AuthenticationManager authenticationManager,
-                          JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository,
+                          AuthenticationManager authenticationManager,
+                          JwtTokenProvider jwtTokenProvider,
+                          PasswordEncoder passwordEncoder) {
+
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Email already exists!"));
-        }
-
-        User user = new User();
-
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setFirstName(registerRequest.getFirstName());
-        user.setLastName(registerRequest.getLastName());
-
-        User savedUser = userRepository.save(user);
-
-        RegisterResponse responseBody = new RegisterResponse();
-        responseBody.setEmail(savedUser.getEmail());
-        responseBody.setFirstName(savedUser.getFirstName());
-        responseBody.setLastName(savedUser.getLastName());
-        responseBody.setUserId(savedUser.getId());
-
-        return ResponseEntity.ok().body(responseBody);
     }
 
     @PostMapping("/login")

@@ -19,6 +19,8 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private Boolean isEnabled = false;
+    private Boolean isLocked = false;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -33,6 +35,8 @@ public class User {
         this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
+        this.isEnabled = user.getEnabled();
+        this.isLocked = user.getLocked();
     }
 
     public User(String email, String password, String firstName, String lastName) {
@@ -82,11 +86,11 @@ public class User {
         this.lastName = lastName;
     }
 
-//    public void setCreatedAt(LocalDateTime createdAt) {
-//        this.createdAt = createdAt;
-//    }
-//
-//    public void setUpdatedAt(LocalDateTime updatedAt) {
-//        this.updatedAt = updatedAt;
-//    }
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public Boolean getLocked() {
+        return isLocked;
+    }
 }

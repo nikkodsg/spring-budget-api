@@ -4,6 +4,19 @@ server:
 spring:
   jpa:
     show-sql: true
+  mail:
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
 ---
 
@@ -19,6 +32,11 @@ spring:
       ddl-auto: create-drop
   flyway:
     enabled: false
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
 
 ---
 
@@ -34,6 +52,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
 
 ---
 
@@ -49,6 +72,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
 
 ---
 

@@ -1,0 +1,7 @@
+CREATE TABLE confirmation_token (
+	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+	token VARCHAR(50) NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+	confirmed_at TIMESTAMP,
+	app_user_id BIGINT REFERENCES app_user(id) ON DELETE CASCADE
+);
