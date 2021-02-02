@@ -6,7 +6,6 @@ import com.nikkodasig.springbudgetapi.exception.NotFoundException;
 import com.nikkodasig.springbudgetapi.model.CategoryType;
 import com.nikkodasig.springbudgetapi.model.Transaction;
 import com.nikkodasig.springbudgetapi.repository.TransactionRepository;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -51,18 +50,20 @@ public class TransactionService {
             .collect(Collectors.toList());
   }
 
-  public Page<Transaction> getAllPaginated(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+  public Page<Transaction> getAllPaginated(Long appUserId, LocalDate startDate, LocalDate endDate, Pageable pageable) {
     if (startDate != null && endDate != null) {
-      return transactionRepository.findAllByDateBetween(startDate, endDate, pageable);
-    }
-    if (startDate != null) {
-      return transactionRepository.findAllByDateGreaterThanEqual(startDate, pageable);
-    }
-    if (endDate != null) {
-      return transactionRepository.findAllByDateLessThanEqual(endDate, pageable);
+      return transactionRepository.findAllByUserAndDateBetween(appUserId, startDate, endDate, pageable);
     }
 
-    return transactionRepository.findAll(pageable);
+    if (startDate != null) {
+      return transactionRepository.findAllByUserAndDateGreaterThanEqual(appUserId, startDate, pageable);
+    }
+
+    if (endDate != null) {
+      return transactionRepository.findAllByUserAndDateLessThanEqual(appUserId, endDate, pageable);
+    }
+
+    return transactionRepository.findAllByUser(appUserId, pageable);
   }
 
 
@@ -80,7 +81,15 @@ public class TransactionService {
     transactionRepository.deleteById(id);
   }
 
-  public double getTotalAmount(LocalDate startDate, LocalDate endDate, String categoryType) {
-    return transactionRepository.getSumOfAmountByCategoryType(startDate, endDate, categoryType).orElse(0.0d);
+  public double getTotalAmount(List<Transaction> transactions, String categoryType) {
+    return transactions
+            .stream()
+            .filter(transaction -> transaction.getCategory().getType().toString() == categoryType)
+            .mapToDouble(transaction -> transaction.getAmount())
+            .sum();
   }
+
+//  public double getTotalAmount(LocalDate startDate, LocalDate endDate, String categoryType) {
+//    return transactionRepository.getSumOfAmountByCategoryType(startDate, endDate, categoryType).orElse(0.0d);
+//  }
 }

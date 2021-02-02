@@ -1,8 +1,10 @@
 package com.nikkodasig.springbudgetapi.controller;
 
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
+import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.model.CategoryType;
 import com.nikkodasig.springbudgetapi.model.Transaction;
+import com.nikkodasig.springbudgetapi.model.User;
 import com.nikkodasig.springbudgetapi.service.TransactionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,6 +21,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -25,13 +29,19 @@ import java.util.Map;
 public class TransactionController {
 
   private TransactionService transactionService;
+  private TransactionMapper transactionMapper;
 
-  public TransactionController(TransactionService transactionService) {
+  public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper) {
     this.transactionService = transactionService;
+    this.transactionMapper = transactionMapper;
   }
 
   @PostMapping
-  public ResponseEntity<TransactionDto> createTransaction(@Valid @RequestBody TransactionDto transactionDto) {
+  public ResponseEntity<TransactionDto> createTransaction(@Valid @RequestBody TransactionDto transactionDto,
+                                                          Authentication authentication) {
+
+    User currentUser = (User) authentication.getPrincipal();
+    transactionDto.setAppUserId(currentUser.getId());
     TransactionDto newTransactionDto = transactionService.save(transactionDto);
     return new ResponseEntity<>(newTransactionDto, HttpStatus.CREATED);
   }
@@ -54,16 +64,22 @@ public class TransactionController {
           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
           @RequestParam(required = false, defaultValue = "0") Integer page,
-          @RequestParam(required = false, defaultValue = "20") Integer pageSize) {
+          @RequestParam(required = false, defaultValue = "20") Integer pageSize,
+          Authentication authentication) {
+
+    User currentUser = (User) authentication.getPrincipal();
 
     Pageable pageable = PageRequest.of(page, pageSize, Sort.by("date").descending().and(Sort.by("id").descending()));
-    Page<Transaction> transactionPage = transactionService.getAllPaginated(startDate, endDate, pageable);
-    List<Transaction> transactionList = transactionPage.getContent();
-    double totalExpense = transactionService.getTotalAmount(startDate, endDate, CategoryType.EXPENSE.toString());
-    double totalIncome = transactionService.getTotalAmount(startDate, endDate, CategoryType.INCOME.toString());
+    Page<Transaction> transactionPage = transactionService.getAllPaginated(currentUser.getId(), startDate, endDate, pageable);
+    List<TransactionDto> transactions = transactionPage.getContent()
+            .stream()
+            .map(transaction -> transactionMapper.toDto(transaction))
+            .collect(Collectors.toList());
+    double totalExpense = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.EXPENSE.toString());
+    double totalIncome = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.INCOME.toString());
 
     Map<String, Object> response = new LinkedHashMap<>();
-    response.put("transactions", transactionList);
+    response.put("transactions", transactions);
     response.put("totalExpense", totalExpense);
     response.put("totalIncome", totalIncome);
     response.put("pageNumber", transactionPage.getNumber());

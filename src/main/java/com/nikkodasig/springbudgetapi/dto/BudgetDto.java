@@ -17,6 +17,7 @@ public class BudgetDto {
   @NotNull
   private Long categoryId;
 
+  private Long appUserId;
   private LocalDate startDate;
   private LocalDate endDate;
 
@@ -50,6 +51,14 @@ public class BudgetDto {
 
   public void setCategoryId(Long categoryId) {
     this.categoryId = categoryId;
+  }
+
+  public Long getAppUserId() {
+    return appUserId;
+  }
+
+  public void setAppUserId(Long appUserId) {
+    this.appUserId = appUserId;
   }
 
   public LocalDate getStartDate() {

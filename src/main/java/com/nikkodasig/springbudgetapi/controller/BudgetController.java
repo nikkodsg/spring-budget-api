@@ -5,8 +5,10 @@ import com.nikkodasig.springbudgetapi.dto.BudgetDto;
 import com.nikkodasig.springbudgetapi.dto.BudgetResponseDto;
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
 import com.nikkodasig.springbudgetapi.model.BudgetPeriodType;
+import com.nikkodasig.springbudgetapi.model.User;
 import com.nikkodasig.springbudgetapi.service.BudgetService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +27,18 @@ public class BudgetController {
   }
 
   @PostMapping
-  public ResponseEntity<BudgetResponseDto> createBudget(@Valid @RequestBody BudgetDto budgetDto) {
-    return ResponseEntity.ok(budgetService.create(budgetDto)) ;
+  public ResponseEntity<BudgetResponseDto> createBudget(@Valid @RequestBody BudgetDto budgetDto,
+                                                        Authentication authentication) {
+
+    User currentUser = (User) authentication.getPrincipal();
+    budgetDto.setAppUserId(currentUser.getId());
+    return ResponseEntity.ok(budgetService.create(budgetDto));
   }
 
   @GetMapping
-  public ResponseEntity<List<BudgetResponseDto>> getBudgets() {
-    return ResponseEntity.ok(budgetService.getAll());
+  public ResponseEntity<List<BudgetResponseDto>> getBudgets(Authentication authentication) {
+    User currentUser = (User) authentication.getPrincipal();
+    return ResponseEntity.ok(budgetService.getAllByUser(currentUser.getId()));
   }
 
   @PutMapping("/{id}")

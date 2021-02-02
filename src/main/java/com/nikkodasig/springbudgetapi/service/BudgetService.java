@@ -66,6 +66,13 @@ public class BudgetService {
             .collect(Collectors.toList());
   }
 
+  public List<BudgetResponseDto> getAllByUser(Long appUserId) {
+    return budgetRepository.findAllByUser(appUserId)
+            .stream()
+            .map(budget -> budgetMapper.toResponseDto(budget))
+            .collect(Collectors.toList());
+  }
+
   public BudgetResponseDto getById(Long id) {
     Budget budget = budgetRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Resource not found"));

@@ -25,6 +25,10 @@ public class Budget {
   @JoinColumn(name = "category_id")
   private Category category;
 
+  @OneToOne
+  @JoinColumn(name = "app_user_id")
+  private User user;
+
   @CreatedDate
   @Column(name = "created_at")
   private LocalDateTime createdAt;
@@ -63,6 +67,14 @@ public class Budget {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public LocalDateTime getCreatedAt() {

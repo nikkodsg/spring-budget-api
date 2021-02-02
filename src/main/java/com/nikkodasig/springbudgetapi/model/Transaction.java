@@ -24,6 +24,10 @@ public class Transaction {
   @JoinColumn(name = "category_id")
   private Category category;
 
+  @ManyToOne
+  @JoinColumn(name = "app_user_id")
+  private User user;
+
   @CreatedDate
   private LocalDateTime createdAt;
 
@@ -62,6 +66,14 @@ public class Transaction {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 
   public LocalDate getDate() {

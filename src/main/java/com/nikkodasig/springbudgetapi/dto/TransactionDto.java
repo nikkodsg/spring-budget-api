@@ -19,6 +19,8 @@ public class TransactionDto {
   @NotNull
   private Long categoryId;
 
+  private Long appUserId;
+
   public Long getId() {
     return id;
   }
@@ -59,4 +61,11 @@ public class TransactionDto {
     this.categoryId = categoryId;
   }
 
+  public Long getAppUserId() {
+    return appUserId;
+  }
+
+  public void setAppUserId(Long appUserId) {
+    this.appUserId = appUserId;
+  }
 }
