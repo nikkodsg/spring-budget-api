@@ -1,6 +1,7 @@
 package com.nikkodasig.springbudgetapi.controller;
 
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
+import com.nikkodasig.springbudgetapi.dto.TransactionResponse;
 import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.model.CategoryType;
 import com.nikkodasig.springbudgetapi.model.Transaction;
@@ -55,7 +56,7 @@ public class TransactionController {
   }
 
   @GetMapping
-  public List<TransactionDto> getTransactions() {
+  public List<TransactionResponse> getTransactions() {
     return transactionService.getAll();
   }
 
@@ -71,9 +72,9 @@ public class TransactionController {
 
     Pageable pageable = PageRequest.of(page, pageSize, Sort.by("date").descending().and(Sort.by("id").descending()));
     Page<Transaction> transactionPage = transactionService.getAllPaginated(currentUser.getId(), startDate, endDate, pageable);
-    List<TransactionDto> transactions = transactionPage.getContent()
+    List<TransactionResponse> transactions = transactionPage.getContent()
             .stream()
-            .map(transaction -> transactionMapper.toDto(transaction))
+            .map(transaction -> transactionMapper.toResponse(transaction))
             .collect(Collectors.toList());
     double totalExpense = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.EXPENSE.toString());
     double totalIncome = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.INCOME.toString());
@@ -91,9 +92,9 @@ public class TransactionController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getTransactions(@PathVariable Long id) {
-    TransactionDto transactionDto = transactionService.getTransaction(id);
-    return ResponseEntity.ok().body(transactionDto);
+  public ResponseEntity<?> getTransaction(@PathVariable Long id) {
+    TransactionResponse transaction = transactionService.getTransaction(id);
+    return ResponseEntity.ok().body(transaction);
   }
 
   @DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.nikkodasig.springbudgetapi.service;
 
 import com.nikkodasig.springbudgetapi.dto.TransactionDto;
+import com.nikkodasig.springbudgetapi.dto.TransactionResponse;
 import com.nikkodasig.springbudgetapi.dto.mapper.TransactionMapper;
 import com.nikkodasig.springbudgetapi.exception.NotFoundException;
 import com.nikkodasig.springbudgetapi.model.CategoryType;
@@ -42,11 +43,11 @@ public class TransactionService {
     return transactionMapper.toDto(updatedTransaction);
   }
 
-  public List<TransactionDto> getAll() {
+  public List<TransactionResponse> getAll() {
     List<Transaction> transactionList = transactionRepository.findAll();
     return transactionList
             .stream()
-            .map(transaction -> transactionMapper.toDto(transaction))
+            .map(transaction -> transactionMapper.toResponse(transaction))
             .collect(Collectors.toList());
   }
 
@@ -67,11 +68,11 @@ public class TransactionService {
   }
 
 
-  public TransactionDto getTransaction(Long id) {
+  public TransactionResponse getTransaction(Long id) {
     Transaction transaction = transactionRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(("Resource not found")));
 
-    return transactionMapper.toDto(transaction);
+    return transactionMapper.toResponse(transaction);
   }
 
   public void delete(Long id) {
