@@ -90,8 +90,8 @@ public class BudgetService {
             .collect(Collectors.toList());
   }
 
-  public List<BudgetBalanceResponseDto> getBudgetsBalances(BudgetPeriodType periodType, LocalDate startDate) {
-    List<Budget> budgetList = budgetRepository.findAllByPeriodType(periodType);
+  public List<BudgetBalanceResponseDto> getBudgetsBalances(Long appUserId, BudgetPeriodType periodType, LocalDate startDate) {
+    List<Budget> budgetList = budgetRepository.findAllByUserAndPeriodType(appUserId, periodType.toString());
 
     return budgetList
             .stream()
@@ -133,8 +133,11 @@ public class BudgetService {
   private List<Transaction> getTransactionsByBudgetAndPeriod(Budget budget, LocalDate startDate) {
     PeriodRange periodRange = getPeriodRange(budget.getPeriodType(), startDate);
 
-    return transactionRepository.getTransactionByCategoryAndDateBetween(
-            budget.getCategory().getId(), periodRange.getStartDate(), periodRange.getEndDate());
+    return transactionRepository.getTransactionsByCategoryAndDateBetween(
+            budget.getUser().getId(),
+            budget.getCategory().getId(),
+            periodRange.getStartDate(),
+            periodRange.getEndDate());
   }
 
   private PeriodRange getPeriodRange(BudgetPeriodType periodType, LocalDate date) {

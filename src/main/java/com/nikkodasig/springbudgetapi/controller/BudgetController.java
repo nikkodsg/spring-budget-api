@@ -68,12 +68,15 @@ public class BudgetController {
   public ResponseEntity<List<BudgetBalanceResponseDto>> getBudgetsWithBalances(
           @RequestParam String periodType,
           @RequestParam String startDate,
-          @RequestParam(required = false) String endDate) {
+          @RequestParam(required = false) String endDate,
+          Authentication authentication) {
+
+    User currentUser = (User) authentication.getPrincipal();
 
     // TODO: catch IllegalArgumentException
     BudgetPeriodType budgetPeriodType = BudgetPeriodType.valueOf(periodType.toUpperCase());
 
-    return ResponseEntity.ok(budgetService.getBudgetsBalances(budgetPeriodType, LocalDate.parse(startDate)));
+    return ResponseEntity.ok(budgetService.getBudgetsBalances(currentUser.getId(), budgetPeriodType, LocalDate.parse(startDate)));
   }
 
 }

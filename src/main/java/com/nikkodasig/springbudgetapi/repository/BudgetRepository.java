@@ -13,6 +13,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
   @Query(value = "SELECT * FROM budget WHERE app_user_id = :app_user_id", nativeQuery = true)
   List<Budget> findAllByUser(@Param("app_user_id") Long appUserId);
 
-  List<Budget> findAllByPeriodType(BudgetPeriodType periodType);
+  @Query(value = "SELECT * FROM budget WHERE app_user_id = :appUserId AND period_type = :periodType", nativeQuery = true)
+  List<Budget> findAllByUserAndPeriodType(@Param("appUserId") Long appUserId, @Param("periodType") String periodType);
 
 }
