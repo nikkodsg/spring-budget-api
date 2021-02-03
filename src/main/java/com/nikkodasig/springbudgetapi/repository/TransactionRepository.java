@@ -54,10 +54,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
           "FROM transaction t\n" +
           "LEFT JOIN category c\n" +
           "ON t.category_id = c.id\n" +
-          "WHERE t.app_user_id = c.id = :categoryId and t.date >= :startDate and t.date <= :endDate", nativeQuery = true)
-  List<Transaction> getTransactionByCategoryAndDateBetween(@Param("categoryId") Long categoryId,
-                                                           @Param("startDate") LocalDate startDate,
-                                                           @Param("endDate") LocalDate endDate);
+          "WHERE t.app_user_id = :appUserId " +
+                  "AND t.category_id = :categoryId " +
+                  "AND t.date BETWEEN :startDate " +
+                  "AND :endDate",
+          nativeQuery = true)
+  List<Transaction> getTransactionsByCategoryAndDateBetween(@Param("appUserId") Long appUserId,
+                                                            @Param("categoryId") Long categoryId,
+                                                            @Param("startDate") LocalDate startDate,
+                                                            @Param("endDate") LocalDate endDate);
 
   // TODO: handle when no dates are provided
   @Query(value =
