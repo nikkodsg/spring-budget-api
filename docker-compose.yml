@@ -17,7 +17,7 @@ services:
     restart: always
     build: .
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: docker
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/budgetapp
     ports:
       - '8090:8080'

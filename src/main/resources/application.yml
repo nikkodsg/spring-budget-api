@@ -2,26 +2,6 @@ server:
   port: 8080
 
 spring:
-  jpa:
-    show-sql: true
-  mail:
-    properties:
-      mail:
-        smtp:
-          ssl:
-            trust: "*"
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
-
----
-
-spring:
-  profiles: default
   datasource:
     url: jdbc:h2:mem:testdb
   h2:
@@ -30,6 +10,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+      show-sql: true
   flyway:
     enabled: false
   mail:
@@ -37,57 +18,11 @@ spring:
     port: 1025
     username: test
     password: test
-
----
-
-spring:
-  profiles: local
-  datasource:
-    url: jdbc:postgresql://localhost:5432/budgetapp
-    username: postgres
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  flyway:
-    enabled: true
-  mail:
-    host: localhost
-    port: 1025
-    username: test
-    password: test
-
----
-
-spring:
-  profiles: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5460/budgetapp
-    username: postgres
-    password: password
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  flyway:
-    enabled: true
-  mail:
-    host: localhost
-    port: 1025
-    username: test
-    password: test
-
----
-
-spring:
-  profiles: heroku
-  datasource:
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: false
-  flyway:
-    enabled: true
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
