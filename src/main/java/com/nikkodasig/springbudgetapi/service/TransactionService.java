@@ -90,7 +90,7 @@ public class TransactionService {
             .sum();
   }
 
-//  public double getTotalAmount(LocalDate startDate, LocalDate endDate, String categoryType) {
-//    return transactionRepository.getSumOfAmountByCategoryType(startDate, endDate, categoryType).orElse(0.0d);
-//  }
+  public double getTotalAmount(Long appUserId, LocalDate startDate, LocalDate endDate, String categoryType) {
+    return transactionRepository.getSumOfAmountByCategoryType(appUserId, startDate, endDate, categoryType).orElse(0.0d);
+  }
 }

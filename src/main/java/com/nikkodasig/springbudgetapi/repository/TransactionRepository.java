@@ -19,7 +19,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
   @Query(
           value = "SELECT * FROM transaction t WHERE t.app_user_id = :appUserId AND t.date >= :startDate",
-          countQuery = "SELECT COUNT(*) FROM transaction",
+          countQuery = "SELECT COUNT(*) FROM transaction t WHERE t.app_user_id = :appUserId AND t.date >= :startDate",
           nativeQuery = true)
   Page<Transaction> findAllByUserAndDateGreaterThanEqual(@Param("appUserId") Long appUserId,
                                                          @Param("startDate") LocalDate startDate,
@@ -27,7 +27,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
   @Query(
           value = "SELECT * FROM transaction t WHERE t.app_user_id = :appUserId AND t.date <= :endDate",
-          countQuery = "SELECT COUNT(*) FROM transaction",
+          countQuery = "SELECT COUNT(*) FROM transaction t WHERE t.app_user_id = :appUserId AND t.date <= :endDate",
           nativeQuery = true)
   Page<Transaction> findAllByUserAndDateLessThanEqual(@Param("appUserId") Long appUserId,
                                                       @Param("endDate") LocalDate endDate,
@@ -36,7 +36,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
   @Query(
           value = "SELECT * FROM transaction t LEFT JOIN category c ON t.category_id = c.id " +
                   "WHERE t.app_user_id = :appUserId AND t.date BETWEEN :startDate AND :endDate",
-          countQuery = "SELECT COUNT(*) FROM transaction",
+          countQuery = "SELECT COUNT(*) FROM transaction t WHERE t.app_user_id = :appUserId AND t.date BETWEEN :startDate AND :endDate",
           nativeQuery = true)
   Page<Transaction> findAllByUserAndDateBetween(@Param("appUserId") Long appUserId,
                                                 @Param("startDate") LocalDate startDate,
@@ -44,8 +44,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                                                 Pageable pageable);
 
   @Query(
-          value = "SELECT * FROM transaction t WHERE t.app_user_id = :appUserId ORDER BY t.date DESC",
-          countQuery = "SELECT COUNT(*) FROM transaction",
+          value = "SELECT * FROM transaction t WHERE t.app_user_id = :appUserId",
+          countQuery = "SELECT COUNT(*) FROM transaction t WHERE t.app_user_id = :appUserId",
           nativeQuery = true)
   Page<Transaction> findAllByUser(@Param("appUserId") Long appUserId, Pageable pageable);
 
@@ -69,8 +69,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
           "SELECT SUM(t.amount)\n" +
           "FROM transaction t\n" +
           "LEFT JOIN category c ON t.category_id = c.id\n" +
-          "WHERE t.date >= :startDate AND t.date <= :endDate AND c.type = :categoryType", nativeQuery = true)
-  Optional<Double> getSumOfAmountByCategoryType(@Param("startDate") LocalDate startDate,
+          "WHERE t.app_user_id = :appUserId AND t.date >= :startDate AND t.date <= :endDate AND c.type = :categoryType", nativeQuery = true)
+  Optional<Double> getSumOfAmountByCategoryType(@Param("appUserId") Long appUserId,
+                                                @Param("startDate") LocalDate startDate,
                                                 @Param("endDate") LocalDate endDate,
                                                 @Param("categoryType") String categoryType);
 }

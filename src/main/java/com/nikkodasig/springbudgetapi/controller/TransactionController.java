@@ -97,6 +97,23 @@ public class TransactionController {
     return ResponseEntity.ok().body(transaction);
   }
 
+  @GetMapping("/total")
+  public ResponseEntity<?> getTotalAmount(
+          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+          @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+          @RequestParam String categoryType,
+          Authentication authentication) {
+
+    User currentUser = (User) authentication.getPrincipal();
+
+    double totalAmount = transactionService.getTotalAmount(currentUser.getId(), startDate, endDate, categoryType);
+
+    Map<String, Double> response = new LinkedHashMap<>();
+    response.put("totalAmount", totalAmount);
+
+    return ResponseEntity.ok(response);
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteTransaction(@PathVariable Long id) {
     transactionService.delete(id);
