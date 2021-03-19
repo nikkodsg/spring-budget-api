@@ -76,13 +76,9 @@ public class TransactionController {
             .stream()
             .map(transaction -> transactionMapper.toResponse(transaction))
             .collect(Collectors.toList());
-    double totalExpense = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.EXPENSE.toString());
-    double totalIncome = transactionService.getTotalAmount(transactionPage.getContent(), CategoryType.INCOME.toString());
 
     Map<String, Object> response = new LinkedHashMap<>();
     response.put("transactions", transactions);
-    response.put("totalExpense", totalExpense);
-    response.put("totalIncome", totalIncome);
     response.put("pageNumber", transactionPage.getNumber());
     response.put("pageSize", transactionPage.getSize());
     response.put("totalItems", transactionPage.getTotalElements());
